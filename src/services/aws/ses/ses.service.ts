@@ -23,7 +23,7 @@ const sendEmail = async (to: string, subject: string, htmlBody: string) => {
         Data: subject,
       },
     },
-    Source: process.env.AWS_SES_VERIFIED_EMAIL!, // Must be verified in SES
+    Source: process.env.AWS_SES_VERIFIED_EMAIL!,
   });
 
   return await sesClient.send(command);
