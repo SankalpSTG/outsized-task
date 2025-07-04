@@ -4,7 +4,7 @@ This repository contains code for task given by Outsized.
 
 You can test the APIs using Postman. I have attached a postman json export file in this repository. You can use it to import Postman APIs.
 
-I have also deployed this app on AWS Lambda. You can access it here: 
+I have also deployed this app on AWS Lambda. You can access it here: https://linverg3vzxap4hf43iu3h5kjy0dbust.lambda-url.ap-south-1.on.aws/
 
 ## Setup
 
@@ -50,4 +50,4 @@ APIs should be called in the exact order to mimic a happy use case.
 10. `/resource/user` Test API to Access resouces for User
 
 ## Deployment
-1. The application is deployed on AWS Lambda. You can use following url: 
+1. The application is deployed on AWS Lambda. You can use following url: https://linverg3vzxap4hf43iu3h5kjy0dbust.lambda-url.ap-south-1.on.aws/

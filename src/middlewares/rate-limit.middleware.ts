@@ -1,7 +1,5 @@
 import {NextFunction, Request, Response} from "express"
-import { BadRequestException, ForbiddenException, HttpException, TooManyRequestsException, UnAuthorizedException } from "../misc/errors"
-import { JWTService } from "../modules/auth/jwt.service"
-import { JWTSignInPayload, USER_ROLES } from "../modules/auth/constants"
+import { BadRequestException, TooManyRequestsException } from "../misc/errors"
 import { RateLimitService } from "../modules/rate-limit/rate-limit.service"
 
 export const RateLimiterMiddleware = () => {
