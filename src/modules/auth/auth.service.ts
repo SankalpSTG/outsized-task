@@ -12,23 +12,23 @@ import { LoginType } from "./types/login";
 import { OtpForPasswordResetType, PasswordResetType } from "./types/password-reset";
 import { RegisterType } from "./types/register";
 import { VerifyUserType } from "./types/verify-user";
+import { UserService } from "../user/user.service";
 
 const register = async (data: RegisterType) => {
-    const userRepository = AppDataSource.getRepository(User)
 
-    let user = await userRepository.findOneBy({email: data.email})
+    let user = await UserService.findOneByEmail(data.email)
     if(user) throw new BadRequestException(undefined, "account already exists")
     
     const otp = OtpService.generate(6)
-    user = new User()
-    user.name = data.name
-    user.email = data.email
-    user.phone = data.phone
-    user.password = await EncryptService.hashPassword(data.password)
-    user.verificationToken = await EncryptService.hashPassword(otp)
-    user.verificationTokenExpiry = new Date(new Date().getTime() + VERIFICATION_TOKEN_EXPIRY_MS)
-    user.role = data.role
-    user = await userRepository.save(user)
+    user = await UserService.createUser({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        password: await EncryptService.hashPassword(data.password),
+        verificationToken: await EncryptService.hashPassword(otp),
+        verificationTokenExpiry: new Date(new Date().getTime() + VERIFICATION_TOKEN_EXPIRY_MS),
+        role: data.role
+    })
     
     await SESService.sendEmail(data.email, "OTP to Email Verification", "Please use following OTP: " + otp)
 
@@ -39,16 +39,15 @@ const register = async (data: RegisterType) => {
 }
 
 const sendOtpForVerification = async (data: OtpForPasswordResetType) => {
-    const userRepository = AppDataSource.getRepository(User)
-
-    let user = await userRepository.findOneBy({email: data.email})
+    let user = await UserService.findOneByEmail(data.email)
     if(!user) throw new BadRequestException()
     
     const otp = OtpService.generate(6)
 
-    user.verificationToken = await EncryptService.hashPassword(otp)
-    user.verificationTokenExpiry = new Date(new Date().getTime() + VERIFICATION_TOKEN_EXPIRY_MS)
-    await userRepository.save(user)
+    const hashedToken = await EncryptService.hashPassword(otp)
+    const expiry = new Date(new Date().getTime() + VERIFICATION_TOKEN_EXPIRY_MS)
+    
+    await UserService.updateVerificationToken(user.id, hashedToken, expiry)
 
     await SESService.sendEmail(data.email, "OTP to Email Verification", "Please use following OTP: " + otp)
 
@@ -59,9 +58,7 @@ const sendOtpForVerification = async (data: OtpForPasswordResetType) => {
 }
 
 const verifyOtp = async (data: VerifyUserType) => {
-    const userRepository = AppDataSource.getRepository(User)
-
-    let user = await userRepository.findOneBy({id: data.id})
+    let user = await UserService.findOneById(data.id)
     if(!user) throw new BadRequestException()
     
     await validateOtp(user, data.otp)
@@ -69,18 +66,14 @@ const verifyOtp = async (data: VerifyUserType) => {
 
 
 const verifyUser = async (data: VerifyUserType) => {
-    const userRepository = AppDataSource.getRepository(User)
-
-    let user = await userRepository.findOneBy({id: data.id})
+    let user = await UserService.findOneById(data.id)
     if(!user) throw new BadRequestException()
     
     if(user.emailVerified) return true
     
     await validateOtp(user, data.otp)
 
-    user.verificationToken = null
-    user.emailVerified = true
-    await userRepository.save(user)
+    await UserService.setEmailVerified(user.id, true)
 }
 
 const validateOtp = async (user: User, otp: string) => {
@@ -94,23 +87,17 @@ const validateOtp = async (user: User, otp: string) => {
 }
 
 const updatePassword = async (data: PasswordResetType) => {
-    const userRepository = AppDataSource.getRepository(User)
-    
-    let user = await userRepository.findOneBy({id: data.id})
+    let user = await UserService.findOneById(data.id)
     if(!user) throw new BadRequestException()
         
     await validateOtp(user, data.otp)
     
-    user.verificationToken = null
-    user.password = await EncryptService.hashPassword(data.password)
-    user.emailVerified = true
-    await userRepository.save(user)
+    const passwordHash = await EncryptService.hashPassword(data.password)
+    await UserService.updatePassword(data.id, passwordHash, true)
 }
 
 const login = async (data: LoginType) => {
-    const userRepository = AppDataSource.getRepository(User)
-
-    let user = await userRepository.findOneBy({email: data.email})
+    let user = await UserService.findOneByEmail(data.email)
     if(!user) throw new BadRequestException(undefined, "invalid credentials")
 
     const passwordMatch = await EncryptService.verifyPassword(data.password, user.password)

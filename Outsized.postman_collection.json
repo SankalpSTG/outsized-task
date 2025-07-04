@@ -1,0 +1,1083 @@
+{
+	"info": {
+		"_postman_id": "52e362b2-8f27-4bda-a9e5-88f2edffbc10",
+		"name": "Outsized",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7818517",
+		"_collection_link": "https://technodds.postman.co/workspace/My-Workspace~7d6ef2da-8a57-4bca-8ccf-adf8148ba409/collection/7818517-52e362b2-8f27-4bda-a9e5-88f2edffbc10?action=share&source=collection_link&creator=7818517"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"if (response.message === \"success\" && response.data?.id) {",
+									"    pm.collectionVariables.set(\"userId\", response.data.id);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Sankalp Pol\",\n    \"phone\": \"9967268418\",\n    \"email\": \"testguest7@gmail.com\",\n    \"password\": \"Test@123\",\n    \"role\": \"guest\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{lambdaAPI}}/auth/register",
+							"host": [
+								"{{lambdaAPI}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Sankalp Pol\",\n    \"phone\": \"9967268418\",\n    \"email\": \"testguest6@gmail.com\",\n    \"password\": \"Test@123\",\n    \"role\": \"guest\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localAPI}}/auth/register",
+									"host": [
+										"{{localAPI}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "102"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"66-FWAaCUAuzeZ1DdA0PhaHdl/r4Xc\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Jul 2025 05:31:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"data\": {\n        \"id\": 9,\n        \"otp\": \"Sending OTP in response for testing purpose. OTP: 636662\"\n    }\n}"
+						},
+						{
+							"name": "Account Already Exists",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Sankalp Pol\",\n    \"phone\": \"9967268418\",\n    \"email\": \"testguest6@gmail.com\",\n    \"password\": \"Test@123\",\n    \"role\": \"guest\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localAPI}}/auth/register",
+									"host": [
+										"{{localAPI}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "36"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"24-10gjB5RV+3bxazTVeFT9j38C49Y\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Jul 2025 05:33:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"account already exists\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Verify User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{userId}},\n    \"otp\": \"645247\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/auth/user/verify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"auth",
+								"user",
+								"verify"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": {{userId}},\n    \"otp\": \"636662\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{lambdaAPI}}/auth/user/verify",
+									"host": [
+										"{{lambdaAPI}}"
+									],
+									"path": [
+										"auth",
+										"user",
+										"verify"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 04 Jul 2025 05:31:56 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "21"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "ba811aff-5e73-4f0d-b26e-dfce61677435"
+								},
+								{
+									"key": "x-amzn-Remapped-content-length",
+									"value": "21"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"15-ga8EF/lp+ThIsc8w/OHbk4hPrME\""
+								},
+								{
+									"key": "x-powered-by",
+									"value": "Express"
+								},
+								{
+									"key": "X-Amzn-Trace-Id",
+									"value": "Root=1-6867674b-145002eb1e30217c501930a5;Parent=1d7775f8e34cceec;Sampled=0;Lineage=1:aec5b547:0"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseData = pm.response.json();",
+									"",
+									"if (responseData.message === \"success\" && responseData.data) {",
+									"    pm.collectionVariables.set(\"accessToken\", responseData.data.accessToken);",
+									"    pm.collectionVariables.set(\"refreshToken\", responseData.data.refreshToken);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testguest7@gmail.com\",\n    \"password\": \"Test2@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{lambdaAPI}}/auth/login",
+							"host": [
+								"{{lambdaAPI}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"testguest6@gmail.com\",\n    \"password\": \"Test@123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "359"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"167-JAtQuxinNetwVbe0uuSXJ/ju434\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Jul 2025 05:33:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwicm9sZSI6Imd1ZXN0IiwiaWF0IjoxNzUxNjA3MjAyLCJleHAiOjE3NTE2MTA4MDJ9.jL-Tm1dN_iiO1ZzzCS1H9-50AW5PhjL46FR9Xai0mhk\",\n        \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OSwiaWF0IjoxNzUxNjA3MjAyLCJleHAiOjE3NTQxOTkyMDJ9.Ynsej9j5SpM-LQkTjshuk5J_WUgyem2RjTnNcRZKSKc\"\n    }\n}"
+						},
+						{
+							"name": "Account Not Verified",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"testguest7@gmail.com\",\n    \"password\": \"Test@123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"25-VFaHB9GUlPmHUoPW4A7I88pSd+0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Jul 2025 05:34:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"account is not verified\"\n}"
+						},
+						{
+							"name": "Invalid Password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"testguest7@gmail.com\",\n    \"password\": \"Test2@123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "33"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"21-MzZHBeQUXOlT3agGHY2uE7J05rU\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Jul 2025 05:34:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"invalid credentials\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Send OTP For Forgot Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"if (response.message === \"success\" && response.data?.id) {",
+									"    pm.collectionVariables.set(\"userId\", response.data.id);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testguest6@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{lambdaAPI}}/auth/password-reset/otp",
+							"host": [
+								"{{lambdaAPI}}"
+							],
+							"path": [
+								"auth",
+								"password-reset",
+								"otp"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"testguest6@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localAPI}}/auth/password-reset/otp",
+									"host": [
+										"{{localAPI}}"
+									],
+									"path": [
+										"auth",
+										"password-reset",
+										"otp"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "102"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"66-Bn2qO4yb06ykD1nZbxj7NcGIvnE\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Jul 2025 05:32:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"data\": {\n        \"id\": 9,\n        \"otp\": \"Sending OTP in response for testing purpose. OTP: 438104\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Validate OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{userId}},\n    \"otp\": \"438104\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{lambdaAPI}}/auth/password-reset/validate",
+							"host": [
+								"{{lambdaAPI}}"
+							],
+							"path": [
+								"auth",
+								"password-reset",
+								"validate"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": {{userId}},\n    \"otp\": \"438104\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/auth/password-reset/validate",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"auth",
+										"password-reset",
+										"validate"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "21"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"15-ga8EF/lp+ThIsc8w/OHbk4hPrME\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Jul 2025 05:32:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{userId}},\n    \"otp\": \"694843\",\n    \"password\": \"Testex@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{lambdaAPI}}/auth/password-reset",
+							"host": [
+								"{{lambdaAPI}}"
+							],
+							"path": [
+								"auth",
+								"password-reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Access Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\": {{refreshToken}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{lambdaAPI}}/auth/access-token",
+							"host": [
+								"{{lambdaAPI}}"
+							],
+							"path": [
+								"auth",
+								"access-token"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": {{refreshToken}}\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/auth/access-token",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"auth",
+										"access-token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "203"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"cb-bBM8IWdNb9U/9K9KzT6G+cwuuTk\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Jul 2025 02:58:11 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"data\": {\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InVzZXIiLCJpYXQiOjE3NTE1OTc4OTEsImV4cCI6MTc1MTYwMTQ5MX0.QAtW4IqDuNP61zh5oNhBQm79l5uXko0rUbmTQTOF_Yw\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Resource",
+			"item": [
+				{
+					"name": "Get Admin Resource",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{lambdaAPI}}/resource/admin",
+							"host": [
+								"{{lambdaAPI}}"
+							],
+							"path": [
+								"resource",
+								"admin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "RBAC Limit",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/resource/admin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"resource",
+										"admin"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "53"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"35-s2KITqaiN940frfxIwSfEQeMLDs\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Jul 2025 05:32:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"you do not have access to this resource\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Guest Resource",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{lambdaAPI}}/resource/guest",
+							"host": [
+								"{{lambdaAPI}}"
+							],
+							"path": [
+								"resource",
+								"guest"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/resource/guest",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"resource",
+										"guest"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "138"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"8a-9c8c/IfZTuAAfSDWZuXwz5x+LeU\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Jul 2025 05:32:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"success\",\n    \"data\": {\n        \"data\": \"This is Guest resource, if you are seeing this, that means you are either an admin, user or guest.\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get User Resource",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{lambdaAPI}}/resource/user",
+							"host": [
+								"{{lambdaAPI}}"
+							],
+							"path": [
+								"resource",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "accessToken",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "localAPI",
+			"value": "http://localhost:4000",
+			"type": "string"
+		},
+		{
+			"key": "lambdaAPI",
+			"value": "https://linverg3vzxap4hf43iu3h5kjy0dbust.lambda-url.ap-south-1.on.aws",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": ""
+		}
+	]
+}

@@ -33,6 +33,10 @@ For testing purpose, OTP is being sent in response body as well in case a dummy 
 4. Comment the line `app.use(app.use(RateLimiterMiddleware()))` to disable rate limiting.
 5. I have implemented Fixed Window rate limiting. Furthermore we can implement other strategies like Sliding Window and Token Bucket using Strategy Design Pattern. However for current usecase, I've kept the code short and functional.
 
+### Email Service
+1. I have implemented AWS SES for sending emails.
+2. To test emails, you will need to provide a valid Access Key ID / Secret pair for AWS SES. It would be more convenient to test it using the Lambda url mentioned above.
+
 ### Error Handling
 1. There is a global error handler which catches exceptions and throws appropriate error.
 2. Custom Exceptions are created for different types of error.
@@ -47,9 +51,13 @@ APIs should be called in the exact order to mimic a happy use case.
 6. `/auth/password-reset` Validate OTP & Update Password
 7. `/auth/access-token` Generate Access Token using Refresh Token
 
-8. `/resource/admin` Test API to Access resouces for Admin
-9. `/resource/guest` Test API to Access resouces for Guest
-10. `/resource/user` Test API to Access resouces for User
+8. `/resource/admin` Test API to Access resouces for Admin (only admin can access)
+9. `/resource/guest` Test API to Access resouces for Guest (everyone with account can access)
+10. `/resource/user` Test API to Access resouces for User (only user and admin can access)
+
+Please tweak the body parameters for Register to create different users.
 
 ## Deployment
-1. The application is deployed on AWS Lambda. You can use following url: https://linverg3vzxap4hf43iu3h5kjy0dbust.lambda-url.ap-south-1.on.aws/
+1. The application is already deployed on AWS Lambda for testing. You can use following url: https://linverg3vzxap4hf43iu3h5kjy0dbust.lambda-url.ap-south-1.on.aws/
+2. The project has a Dockerfile to build and containerize the project.
+3. The project also has a Github Workflow file to containerize and push it to ECR and then deploy to Lambda. All you need to do is substitute values for the secrets used in github workflow file.
