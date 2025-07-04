@@ -21,7 +21,13 @@ app.get("/", (req, res) => {
 })
 
 app.use(GlobalErrorHandler)
-export const handler = ServerlessHttp(app)
-// app.listen(4000, () => {
-//     console.log("Hello")
-// })
+
+if(process.env.ENVIRONMENT == "development"){
+    app.listen(4000, () => {
+        console.log("Hello")
+    })
+}
+
+export const handler = ServerlessHttp(app, {
+    request: true
+})
