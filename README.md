@@ -37,6 +37,7 @@ For testing purpose, OTP is being sent in response body as well in case a dummy 
 1. For demo purpose, I have implemented IP blacklisting with Redis. 
 2. There is a float constant set in env `IP_BLACKLIST_LIMIT` initially set to 1.5.
 3. This defines that if someone attempts 1.5x rate limit requests, then their IP will be blacklisted. For e.g. if someone makes 15 requests while global rate limit is 10 requests per minute, then their IP will get blacklisted
+4. Blacklisting / Whitelisting can be further modularized using Strategy Pattern and using Database other than Redis for persistent storage.
 
 ### Email Service
 1. I have implemented AWS SES for sending emails.
