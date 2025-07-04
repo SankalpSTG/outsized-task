@@ -35,7 +35,7 @@ if(process.env.ENVIRONMENT == "development"){
 
 export const handler = ServerlessHttp(async (req: Request, res: Response, next: NextFunction) => {
     try{
-        await AppDataSource.initialize()
+        if(!AppDataSource.isInitialized) await AppDataSource.initialize()
         return app(req, res)
     }catch(error){
         console.error("DB init failed:", error)
