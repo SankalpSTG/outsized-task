@@ -7,7 +7,9 @@ import { GlobalErrorHandler } from "./misc/errors"
 import { RateLimiterMiddleware } from "./middlewares/rate-limit.middleware"
 import ResourceRouter from "./modules/resource/resource.routes"
 import ServerlessHttp from "serverless-http"
+import { CustomJSONMiddleware } from "./middlewares/json.middleware"
 const app = express()
+app.use(CustomJSONMiddleware())
 app.use(json())
 app.use(RateLimiterMiddleware())
 
