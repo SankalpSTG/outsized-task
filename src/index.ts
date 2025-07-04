@@ -6,6 +6,7 @@ import AuthRouter from "./modules/auth/auth.routes"
 import { GlobalErrorHandler } from "./misc/errors"
 import { RateLimiterMiddleware } from "./middlewares/rate-limit.middleware"
 import ResourceRouter from "./modules/resource/resource.routes"
+import ServerlessHttp from "serverless-http"
 const app = express()
 app.use(json())
 app.use(RateLimiterMiddleware())
@@ -20,7 +21,7 @@ app.get("/", (req, res) => {
 })
 
 app.use(GlobalErrorHandler)
-// export const handler = ServerlessHttp(app)
-app.listen(4000, () => {
-    console.log("Hello")
-})
+export const handler = ServerlessHttp(app)
+// app.listen(4000, () => {
+//     console.log("Hello")
+// })
