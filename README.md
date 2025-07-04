@@ -33,6 +33,11 @@ For testing purpose, OTP is being sent in response body as well in case a dummy 
 4. Comment the line `app.use(app.use(RateLimiterMiddleware()))` to disable rate limiting.
 5. I have implemented Fixed Window rate limiting. Furthermore we can implement other strategies like Sliding Window and Token Bucket using Strategy Design Pattern. However for current usecase, I've kept the code short and functional.
 
+### IP Blacklisting / Whitelisting
+1. For demo purpose, I have implemented IP blacklisting with Redis. 
+2. There is a float constant set in env `IP_BLACKLIST_LIMIT` initially set to 1.5.
+3. This defines that if someone attempts 1.5x rate limit requests, then their IP will be blacklisted. For e.g. if someone makes 15 requests while global rate limit is 10 requests per minute, then their IP will get blacklisted
+
 ### Email Service
 1. I have implemented AWS SES for sending emails.
 2. To test emails, you will need to provide a valid Access Key ID / Secret pair for AWS SES. It would be more convenient to test it using the Lambda url mentioned above.

@@ -9,9 +9,9 @@ export const RateLimiterMiddleware = () => {
             req.ip;
         if(!ip) throw new BadRequestException(undefined, "unable to determine sender's ip")
         
-        const isNotLimited = await RateLimitService.limit(ip)
+        const isLimited = await RateLimitService.limit(ip)
         
-        if(!isNotLimited) throw new TooManyRequestsException()
+        if(isLimited) throw new TooManyRequestsException()
 
         next()
     }
