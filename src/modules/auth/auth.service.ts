@@ -1,6 +1,7 @@
 import { AppDataSource } from "../../config/psql.config";
 import { User } from "../../entities/user.entity";
 import { BadRequestException, UnAuthorizedException } from "../../misc/errors";
+import { SESService } from "../../services/aws/ses/ses.service";
 import { VERIFICATION_TOKEN_EXPIRY_MS } from "./constants";
 import { EncryptService } from "./encrypt.service";
 import { JWTService } from "./jwt.service";
@@ -29,11 +30,11 @@ const register = async (data: RegisterType) => {
     user.role = data.role
     user = await userRepository.save(user)
     
-    console.log(otp)
+    await SESService.sendEmail(data.email, "OTP to Email Verification", "Please use following OTP: " + otp)
 
     return {
         id: user.id,
-        otp: "for testing usecase, OTP is " + otp
+        otp: "Sending OTP in response for testing purpose. OTP: " + otp
     }
 }
 
@@ -48,10 +49,12 @@ const sendOtpForVerification = async (data: OtpForPasswordResetType) => {
     user.verificationToken = await EncryptService.hashPassword(otp)
     user.verificationTokenExpiry = new Date(new Date().getTime() + VERIFICATION_TOKEN_EXPIRY_MS)
     await userRepository.save(user)
-    console.log(otp)
+
+    await SESService.sendEmail(data.email, "OTP to Email Verification", "Please use following OTP: " + otp)
+
     return {
         id: user.id,
-        otp: "for testing usecase, OTP is " + otp
+        otp: "Sending OTP in response for testing purpose. OTP: " + otp
     }
 }
 

@@ -6,6 +6,8 @@ You can test the APIs using Postman. I have attached a postman json export file 
 
 I have also deployed this app on AWS Lambda. You can access it here: https://linverg3vzxap4hf43iu3h5kjy0dbust.lambda-url.ap-south-1.on.aws/
 
+For testing purpose, OTP is being sent in response body as well in case a dummy email is provided for registration.
+
 ## Setup
 
 1. Move the `.env.example` file to `.env` and add values for each key

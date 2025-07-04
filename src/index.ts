@@ -28,6 +28,11 @@ app.get("/", (req, res) => {
 app.use(GlobalErrorHandler)
 
 if(process.env.ENVIRONMENT == "development"){
+    AppDataSource.initialize().then(() => {
+        console.log("AppDataSource initialized")
+    }).catch((error) => {
+        console.log(error)
+    })
     app.listen(4000, () => {
         console.log("Hello")
     })
