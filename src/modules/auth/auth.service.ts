@@ -32,7 +32,8 @@ const register = async (data: RegisterType) => {
     console.log(otp)
 
     return {
-        id: user.id
+        id: user.id,
+        otp: "for testing usecase, OTP is " + otp
     }
 }
 
@@ -49,7 +50,8 @@ const sendOtpForVerification = async (data: OtpForPasswordResetType) => {
     await userRepository.save(user)
     console.log(otp)
     return {
-        id: user.id
+        id: user.id,
+        otp: "for testing usecase, OTP is " + otp
     }
 }
 
