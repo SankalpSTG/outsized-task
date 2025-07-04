@@ -1,4 +1,4 @@
-import { JWTSignInPayload } from "../modules/auth/constants";
+import { JWTSignInPayload } from "../modules/auth/types/jwt";
 
 declare module 'express-serve-static-core' {
   interface Request {
