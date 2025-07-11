@@ -106,13 +106,13 @@ const login = async (data: LoginType) => {
     if(!user.emailVerified) throw new BadRequestException(undefined, "account is not verified")
     
     const accessToken = JWTService.sign({
-        id: user.id,
+        userId: user.id,
         role: user.role,
     }, process.env.ACCESS_TOKEN_SECRET!, 
     process.env.ACCESS_TOKEN_EXPIRY!)
 
     const refreshToken = JWTService.sign({
-        id: user.id,
+        userId: user.id,
     }, process.env.REFRESH_TOKEN_SECRET!, 
     process.env.REFRESH_TOKEN_EXPIRY!)
 
